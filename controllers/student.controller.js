@@ -37,6 +37,14 @@ export const getStudents=catchAsyncErrors(async (req, res, next) => {
     Response(res).status(201).message("students found Successfully").body(students).send();
 });
 
+export const getStudentDetails=catchAsyncErrors(async (req, res, next) => {
+    const student=await Student.findById(req.params.id).populate("familyMembers certifications");
+    if (!student) {
+        return next(new ErrorHandler("No Student found with this id", 401));
+    }
+    Response(res).status(201).message("Student found Successfully").body(student).send();
+})
+
 
 export const deleteStudent=catchAsyncErrors(async (req, res) => {
     await Student.findByIdAndDelete(req.params.id);
